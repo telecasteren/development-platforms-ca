@@ -3,14 +3,12 @@ import { asyncHandler } from "../utils/async-handler.js";
 import { sendUserResponse } from "../utils/send-user-response.js";
 import type { User } from "../models/user.js";
 
-// GET all users from users table
 const getAllUsers = asyncHandler(async (req, res) => {
   const [rows] = await pool.execute("SELECT id, email, created_at FROM users");
   const users = rows as User[];
   res.json(users);
 });
 
-// GET single user by id from users table
 const getUserById = asyncHandler(async (req, res) => {
   const id = req.params.id;
 
@@ -22,12 +20,16 @@ const getUserById = asyncHandler(async (req, res) => {
   res.json(users);
 });
 
-// PATCH one or more column at user in users table
-// scalable for multiple fields so it can support PUT requests
+/**
+ * Updates fields on the authenticated user's own account.
+ *
+ * Only `email` is currently supported.
+ * Returns 403 if the path ID does not match `req.user.id`.
+ * Returns 400 if no supported fields are provided.
+ */
 const updateUser = asyncHandler(async (req, res) => {
   const userId = Number(req.params.id);
 
-  // only allow user to edit their own data
   if (userId !== req.user.id) {
     return res.status(403).json({
       error: "Not allowed. Users can only update their own data",
@@ -63,7 +65,11 @@ const updateUser = asyncHandler(async (req, res) => {
   sendUserResponse(res, updatedUser, "User updated successfully");
 });
 
-// Query users by email in users table, structure: /users/search?email=user@email.no
+/**
+ * Searches users by email using a case-insensitive exact match.
+ *
+ * Returns 400 if the `email` query parameter is missing.
+ */
 const queryUsers = asyncHandler(async (req, res) => {
   const email =
     typeof req.query.email === "string" ? req.query.email : undefined;
@@ -79,7 +85,12 @@ const queryUsers = asyncHandler(async (req, res) => {
   return res.status(400).json({ error: "Email query parameter is required" });
 });
 
-// DELETE user from users table
+/**
+ * Deletes the authenticated user's own account.
+ *
+ * Returns 400 if the user ID is invalid.
+ * Returns 403 if the path ID does not match `req.user.id`.
+ */
 const deleteUser = asyncHandler(async (req, res) => {
   const userId = Number(req.params.id);
 
@@ -89,7 +100,6 @@ const deleteUser = asyncHandler(async (req, res) => {
     });
   }
 
-  // only allow user to edit their own data
   if (userId !== req.user.id) {
     return res.status(403).json({
       error: "Not allowed. Users can only delete their own user",

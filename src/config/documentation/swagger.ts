@@ -11,9 +11,8 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "REST API for managing users and articles",
     },
-    // servers: [{ url: `http://localhost:${PORT}` }],
     servers: [
-      { url: "http://localhost:4000" },
+      { url: `http://localhost:${PORT}` },
       { url: "http://localhost:3000" },
     ],
     components: {

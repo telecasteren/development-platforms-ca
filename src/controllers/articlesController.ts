@@ -4,7 +4,6 @@ import { isValidId } from "../utils/validate-id.js";
 import { asyncHandler } from "../utils/async-handler.js";
 import type { Article } from "../models/article.js";
 
-// GET all articles in articles table
 const getAllArticles = asyncHandler(async (req, res) => {
   const [rows] = await pool.execute("SELECT * FROM articles");
   const articles = rows as Article[];
@@ -16,7 +15,6 @@ const getAllArticles = asyncHandler(async (req, res) => {
   res.json(articles);
 });
 
-// GET single article per id from articles table
 const getArticleById = asyncHandler(async (req, res) => {
   const id = Number(req.params.id);
   if (!isValidId(id) || id <= 0) {
@@ -36,7 +34,15 @@ const getArticleById = asyncHandler(async (req, res) => {
   res.json(article);
 });
 
-// Query articles table by title, body and category
+/**
+ * Searches articles by title, body, and-or category.
+ *
+ * Requires at least one supported query parameter. All supplied filters are
+ * combined with AND semantics in the generated SQL query.
+ *
+ * Returns:
+ * - 400 if none of the supported query parameters are provided
+ */
 const queryArticle = asyncHandler(async (req, res) => {
   const { title, body, category } = req.query;
 
@@ -72,7 +78,13 @@ const queryArticle = asyncHandler(async (req, res) => {
   res.json(articles);
 });
 
-// POST article to articles table
+/**
+ * Creates a new article for the authenticated user.
+ *
+ * Returns:
+ * - 400 if title, body, or category is missing
+ * - 401 if no authenticated user is available on the request
+ */
 const postArticle = asyncHandler(async (req, res) => {
   const { title = null, body = null, category = null } = req.body;
   const submitted_by = req.user.id;
@@ -102,7 +114,18 @@ const postArticle = asyncHandler(async (req, res) => {
   });
 });
 
-// PUT new info into current authenticated users articles in article table
+/**
+ * Updates an existing article owned by the authenticated user.
+ *
+ * Supported fields:
+ * - title
+ * - body
+ * - category
+ *
+ * Returns:
+ * - 404 if the article does not exist
+ * - 403 if the authenticated user is not the author of the article
+ */
 const updateArticle = asyncHandler(async (req, res) => {
   const articleId = Number(req.params.id);
   const { title, body, category } = req.body;
@@ -117,7 +140,6 @@ const updateArticle = asyncHandler(async (req, res) => {
     return res.status(404).json({ error: "Article not found" });
   }
 
-  // only allow user to edit their own articles
   if (article.submitted_by !== req.user.id) {
     return res.status(403).json({
       error: "Not allowed. Users can only update their own articles",
@@ -135,7 +157,14 @@ const updateArticle = asyncHandler(async (req, res) => {
   });
 });
 
-// DELETE article from articles table
+/**
+ * Deletes an existing article owned by the authenticated user.
+ *
+ * Returns:
+ * - 400 if required identifiers are missing
+ * - 404 if the article is not found
+ * - 403 if the authenticated user is not the author
+ */
 const deleteArticle = asyncHandler(async (req, res) => {
   const articleId = Number(req.params.id);
   const userId = req.user.id;
