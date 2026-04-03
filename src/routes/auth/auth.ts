@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { loginUser, registerUser } from "../../controllers/authController.js";
-import { validateUserEmail } from "../../middleware/auth/validate-user.js";
+import { validateRequiredUserData } from "../../middleware/auth/validate-user.js";
 
 const router = Router();
 
@@ -30,7 +30,7 @@ const router = Router();
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post("/login", validateUserEmail, loginUser);
+router.post("/login", validateRequiredUserData, loginUser);
 
 /**
  * @swagger
@@ -58,6 +58,6 @@ router.post("/login", validateUserEmail, loginUser);
  *       409:
  *         $ref: '#/components/responses/Conflict'
  */
-router.post("/register", registerUser);
+router.post("/register", validateRequiredUserData, registerUser);
 
 export default router;

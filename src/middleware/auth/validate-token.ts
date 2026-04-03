@@ -1,6 +1,7 @@
 import { pool } from "../../config/database.js";
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "./verify-token.js";
+import { userTokenSchema } from "./schemas/user.js";
 import type { User } from "../../models/user.js";
 
 export const validateToken = async (
@@ -16,9 +17,11 @@ export const validateToken = async (
       .json({ error: "Missing authorization header. Token required." });
   }
 
-  if (!authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({
-      error: "Token format must be: Bearer <token>",
+  const tokenFormatResult = userTokenSchema.safeParse({ token: authHeader });
+  if (!tokenFormatResult.success) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: tokenFormatResult.error.issues.map((issue) => issue.message),
     });
   }
 

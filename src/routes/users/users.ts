@@ -2,7 +2,7 @@ import { Router } from "express";
 import { validateToken } from "../../middleware/auth/validate-token.js";
 import {
   validateUserId,
-  validateUserEmail,
+  validatePartialUserData,
 } from "../../middleware/auth/validate-user.js";
 import {
   getAllUsers,
@@ -145,7 +145,7 @@ router.patch(
   "/:id",
   validateToken,
   validateUserId,
-  validateUserEmail,
+  validatePartialUserData,
   updateUser,
 );
 

@@ -1,32 +1,56 @@
 import { Request, Response, NextFunction } from "express";
-import type { User } from "../../models/user.js";
+import {
+  userIdSchema,
+  partialUserDataSchema,
+  requiredUserDataSchema,
+} from "./schemas/user.js";
 
 export const validateUserId = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const userId = Number(req.params.id);
-  if (isNaN(userId)) {
-    return res.status(400).json({ error: "Invalid user ID" });
+  const result = userIdSchema.safeParse(req.params);
+
+  if (!result.success) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: result.error.issues.map((issue) => issue.message),
+    });
   }
   next();
 };
 
-export const validateUserEmail = (
+export const validateRequiredUserData = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const { email } = req.body as { email?: User["email"] };
-  const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const result = requiredUserDataSchema.safeParse(req.body);
 
-  if (typeof email !== "string" || email.trim() === "") {
-    return res.status(400).json({ error: "Email is required" });
+  if (!result.success) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: result.error.issues.map((issue) => issue.message),
+    });
   }
 
-  if (!isValid.test(email)) {
-    return res.status(400).json({ error: "Email format is invalid" });
+  next();
+};
+
+export const validatePartialUserData = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const result = partialUserDataSchema.safeParse(req.body);
+
+  if (!result.success) {
+    return res.status(400).json({
+      error: "Validation failed",
+      details: result.error.issues.map((issue) => issue.message),
+    });
   }
+
   next();
 };

@@ -140,14 +140,14 @@ const updateArticle = asyncHandler(async (req, res) => {
     return res.status(404).json({ error: "Article not found" });
   }
 
-  if (article.submitted_by !== req.user.id) {
+  if (Number(article.submitted_by) !== Number(req.user.id)) {
     return res.status(403).json({
       error: "Not allowed. Users can only update their own articles",
     });
   }
 
   await pool.execute(
-    `UPDATE articles SET title = ?, SET body = ?, SET category = ? WHERE id = ?`,
+    `UPDATE articles SET title = ?, body = ?, category = ? WHERE id = ?`,
     [title, body, category, articleId],
   );
 

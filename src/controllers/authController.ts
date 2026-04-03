@@ -25,12 +25,16 @@ const loginUser = asyncHandler(async (req, res) => {
   const user = users[0];
 
   if (!user) {
-    return res.status(401).json({ error: "Invalid credentials" });
+    return res
+      .status(401)
+      .json({ error: "Invalid credentials, user doesn't exist" });
   }
 
   const ok = await bcrypt.compare(password, user.password_hash);
   if (!ok) {
-    return res.status(401).json({ error: "Invalid credentials" });
+    return res
+      .status(401)
+      .json({ error: "Invalid credentials, wrong password" });
   }
 
   const token = generateToken(user.id);
