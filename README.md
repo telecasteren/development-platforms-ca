@@ -73,6 +73,25 @@ Now you can use the API with Postman or any other application by following the A
 
 ---
 
+**Frontend & Backend**
+
+You can start both the frontend and the backend server simultaneously by running
+
+```bash
+npm run dev:all
+```
+
+The terminal will show you where the backend and frontend is running:
+
+```bash
+[backend] Server is running on port 4000
+[frontend]   ➜  Local:   http://localhost:5173/
+```
+
+Open the frontend URL in your browser to view, test or watch live code changes on the frontend.
+
+---
+
 ### OpenAPI Swagger
 
 [swagger.ts](/config/documentation/swagger.ts) centralises all configuration of the Swagger documentation, including centralising repeated patterns used across routes.

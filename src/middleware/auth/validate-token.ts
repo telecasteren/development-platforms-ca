@@ -35,7 +35,7 @@ export const validateToken = async (
   }
 
   const [rows] = await pool.execute(
-    "SELECT id, email, created_at FROM users WHERE id = ?",
+    "SELECT id, email FROM users WHERE id = ?",
     [payload.userId],
   );
   const users = rows as User[];

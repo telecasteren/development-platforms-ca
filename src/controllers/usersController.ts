@@ -4,7 +4,11 @@ import { sendUserResponse } from "../utils/send-user-response.js";
 import type { User } from "../models/user.js";
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  const [rows] = await pool.execute("SELECT id, email, created_at FROM users");
+  const [rows] = await pool.execute(
+    `SELECT id, email
+   FROM users
+   ORDER BY email DESC`,
+  );
   const users = rows as User[];
   res.json(users);
 });

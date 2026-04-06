@@ -5,7 +5,17 @@ import { asyncHandler } from "../utils/async-handler.js";
 import type { Article } from "../models/article.js";
 
 const getAllArticles = asyncHandler(async (req, res) => {
-  const [rows] = await pool.execute("SELECT * FROM articles");
+  const [rows] = await pool.execute(`SELECT
+     a.id,
+     a.title,
+     a.body,
+     a.category,
+     a.submitted_by,
+     a.created_at,
+     u.email AS author_email
+   FROM articles a
+   LEFT JOIN users u ON u.id = a.submitted_by
+   ORDER BY a.created_at DESC`);
   const articles = rows as Article[];
 
   if (!articles.length) {
@@ -15,15 +25,48 @@ const getAllArticles = asyncHandler(async (req, res) => {
   res.json(articles);
 });
 
+const getUserArticles = asyncHandler(async (req, res) => {
+  const userId = req.user.id;
+
+  const [rows] = await pool.execute(
+    `SELECT
+      a.id,
+      a.title,
+      a.body,
+      a.category,
+      a.submitted_by,
+      a.created_at,
+      u.email AS author_email
+      FROM articles a
+      LEFT JOIN users u ON u.id = a.submitted_by
+      WHERE a.submitted_by = ?
+      ORDER BY a.created_at DESC`,
+    [userId],
+  );
+
+  res.json(rows);
+});
+
 const getArticleById = asyncHandler(async (req, res) => {
   const id = Number(req.params.id);
   if (!isValidId(id) || id <= 0) {
     return res.status(400).json({ error: "Invalid article ID" });
   }
 
-  const [rows] = await pool.execute("SELECT * FROM articles WHERE id = ?", [
-    id,
-  ]);
+  const [rows] = await pool.execute(
+    `SELECT
+     a.id,
+     a.title,
+     a.body,
+     a.category,
+     a.submitted_by,
+     a.created_at,
+     u.email AS author_email
+   FROM articles a
+   LEFT JOIN users u ON u.id = a.submitted_by
+   WHERE a.id = ?`,
+    [id],
+  );
   const articles = rows as Article[];
   const article = articles[0];
 
@@ -205,6 +248,7 @@ const deleteArticle = asyncHandler(async (req, res) => {
 
 export {
   getAllArticles,
+  getUserArticles,
   getArticleById,
   postArticle,
   updateArticle,

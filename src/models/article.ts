@@ -7,4 +7,5 @@ export interface Article {
   category: string;
   submitted_by: User["id"];
   created_at: Date;
+  author_email?: string | null;
 }

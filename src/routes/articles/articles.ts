@@ -2,6 +2,7 @@ import { Router } from "express";
 import { validateToken } from "../../middleware/auth/validate-token.js";
 import {
   getAllArticles,
+  getUserArticles,
   getArticleById,
   queryArticle,
   postArticle,
@@ -48,6 +49,28 @@ const router = Router();
  *         $ref: '#/components/responses/BadRequest'
  */
 router.get("/search", queryArticle);
+
+/**
+ * @swagger
+ * /articles/me:
+ *   get:
+ *     tags:
+ *       - Articles
+ *     summary: Get all articles by user
+ *     description: Returns all articles for an authenticated user.
+ *     responses:
+ *       200:
+ *         description: List of articles by authenticated user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Article'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
+ */
+router.get("/me", validateToken, getUserArticles);
 
 /**
  * @swagger

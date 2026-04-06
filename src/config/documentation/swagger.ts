@@ -1,5 +1,6 @@
 import "dotenv/config";
 import swaggerJsdoc from "swagger-jsdoc";
+import { nullable } from "zod";
 
 const PORT = process.env.PORT || 3000;
 
@@ -92,6 +93,11 @@ const swaggerOptions = {
             category: { type: "string" },
             submitted_by: { type: "integer", example: 1 },
             created_at: { type: "string", format: "date-time" },
+            author_email: {
+              type: "string",
+              nullable: true,
+              example: "user@example.com",
+            },
           },
           required: [
             "id",
