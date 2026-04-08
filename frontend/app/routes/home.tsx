@@ -1,10 +1,9 @@
-"use client";
-
 import type { Route } from "./+types/home";
+import type { ApiArticle } from "services/api/articles/types";
 import { Link } from "react-router";
 import { useLoaderData } from "react-router";
-import { getAllArticles } from "utils/api/articles/get-all-articles";
-import type { ApiArticle } from "../routes/articles/types";
+import { getAllArticles } from "services/api/articles/fetch/get-all-articles";
+import ArticlesSection from "../components/articles/ArticlesSection";
 
 export const meta = ({}: Route.MetaArgs) => {
   return [
@@ -25,23 +24,7 @@ const Home = () => {
     <>
       <h1 className="text-4xl mt-2">The News Bureau</h1>
       <p>The 3 most recent articles posted are displayed here</p>
-
-      <section className="mt-20 p-4 grid max-w-800 border border-amber-400">
-        {mostRecentArticles.map((item) => (
-          <div key={item.id}>
-            <h3 className="text-xl">{item.title}</h3>
-            <p className="mt-4">{item.body}</p>
-            <p className="mt-4">
-              <b>Release date:</b> {item.created_at}
-            </p>
-            <p>
-              <b>Author:</b> {item.author_email}
-            </p>
-            <hr className="bg-gray-700 m-20 " />
-          </div>
-        ))}
-      </section>
-
+      <ArticlesSection articles={mostRecentArticles} />
       <Link to="/articles" className="hover:underline">
         See all articles
       </Link>

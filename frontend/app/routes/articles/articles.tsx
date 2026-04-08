@@ -1,8 +1,9 @@
 import type { Route } from "./+types/articles";
+import type { ApiArticle } from "services/api/articles/types";
 import { useLoaderData } from "react-router";
 import { SearchBar } from "../../components/search/SearchBar";
-import { getAllArticles } from "utils/api/articles/get-all-articles";
-import type { ApiArticle } from "./types";
+import { getAllArticles } from "services/api/articles/fetch/get-all-articles";
+import ArticlesSection from "../../components/articles/ArticlesSection";
 
 export const meta = ({}: Route.MetaArgs) => {
   return [
@@ -25,24 +26,8 @@ const Articles = () => {
     <>
       <h1 className="text-4xl mt-2">Articles</h1>
       <p>View, search and read all articles here</p>
-
       <SearchBar />
-
-      <section className="mt-20 p-4 grid max-w-800 rounded-sm border border-amber-400">
-        {articles.map((item) => (
-          <div key={item.id}>
-            <h3 className="text-xl">{item.title}</h3>
-            <p className="mt-4">{item.body}</p>
-            <p className="mt-4">
-              <b>Release date:</b> {item.created_at}
-            </p>
-            <p>
-              <b>Author:</b> {item.author_email ?? "Unknown author"}
-            </p>
-            <hr className="bg-gray-700 m-20 " />
-          </div>
-        ))}
-      </section>
+      <ArticlesSection articles={articles} />
     </>
   );
 };

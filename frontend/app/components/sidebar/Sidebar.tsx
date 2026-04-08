@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { NavLink, useFetcher } from "react-router";
 import { items } from "./items";
@@ -7,17 +5,6 @@ import type { SidebarGroup, SidebarItem } from "./types";
 
 const isGroupItem = (item: SidebarItem): item is SidebarGroup =>
   item.kind === "group";
-
-const navNormalState =
-  "text-gray-900 bg-white dark:text-white dark:bg-gray-950 transition duration-200";
-const navHoverState =
-  "hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200";
-const navActiveState =
-  "text-gray-900 bg-gray-100 dark:text-gray-900 dark:bg-amber-400 transition duration-200";
-const navTextColours =
-  "text-gray-900 dark:text-white group-hover:text-gray-900 dark:group-hover:text-gray-900 transition duration-200";
-const navActiveText =
-  "text-gray-900 dark:text-gray-900 transition duration-200";
 
 const Sidebar = () => {
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
@@ -97,18 +84,12 @@ const Sidebar = () => {
                     <>
                       <button
                         type="button"
-                        className={[
-                          "flex items-center p-2 w-full text-base font-normal rounded-md transition duration-75 group",
-                          navNormalState,
-                          navHoverState,
-                        ].join(" ")}
+                        className="flex items-center p-2 w-full text-base font-normal rounded-md group text-gray-900 bg-white dark:text-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200"
                         aria-controls={item.submenuId}
                         aria-expanded={Boolean(openGroups[item.id])}
                         onClick={() => toggleGroup(item.id)}
                       >
-                        <span
-                          className={["shrink-0", navTextColours].join(" ")}
-                        >
+                        <span className="shrink-0 text-gray-900 dark:text-white group-hover:text-gray-900 dark:group-hover:text-gray-900 transition duration-200">
                           {item.icon}
                         </span>
                         <span className="flex-1 ml-3 text-left whitespace-nowrap">
@@ -145,22 +126,14 @@ const Sidebar = () => {
                                     action: "/auth/logout",
                                   })
                                 }
-                                className={[
-                                  "flex items-center p-2 pl-11 w-full text-base font-normal rounded-sm transition duration-75 group",
-                                  navNormalState,
-                                  navHoverState,
-                                ].join(" ")}
+                                className="flex items-center p-2 pl-11 w-full text-base font-normal rounded-sm group text-gray-900 bg-white dark:text-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200"
                               >
                                 {child.label}
                               </button>
                             ) : (
                               <NavLink
                                 to={child.to}
-                                className={[
-                                  "flex items-center p-2 pl-11 w-full text-base font-normal rounded-sm transition duration-75 group",
-                                  navNormalState,
-                                  navHoverState,
-                                ].join(" ")}
+                                className="flex items-center p-2 pl-11 w-full text-base font-normal rounded-sm group text-gray-900 bg-white dark:text-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200"
                               >
                                 {child.label}
                               </NavLink>
@@ -176,8 +149,8 @@ const Sidebar = () => {
                         [
                           "flex items-center p-2 text-base font-normal rounded-sm group",
                           isActive
-                            ? navActiveState
-                            : [navNormalState, navHoverState].join(" "),
+                            ? "text-gray-900 bg-gray-100 dark:text-gray-900 dark:bg-amber-400 transition duration-200"
+                            : "text-gray-900 bg-white dark:text-white dark:bg-gray-950 transition duration-200 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400",
                         ].join(" ")
                       }
                       {...(item.id === "docs"
@@ -189,8 +162,8 @@ const Sidebar = () => {
                           <span
                             className={
                               isActive
-                                ? ["shrink-0", navActiveText].join(" ")
-                                : ["shrink-0", navTextColours].join(" ")
+                                ? "shrink-0 text-gray-900 bg-gray-100 dark:text-gray-900 dark:bg-amber-400 transition duration-200"
+                                : "shrink-0 text-gray-900 dark:text-white group-hover:text-gray-900 dark:group-hover:text-gray-900 transition duration-200"
                             }
                           >
                             {item.icon}
@@ -223,7 +196,7 @@ const Sidebar = () => {
         <div className="hidden absolute bottom-0 left-0 justify-center p-4 space-x-4 w-full lg:flex bg-white dark:bg-gray-950 z-20 border-r border-gray-200 dark:border-gray-700">
           <a
             href="#"
-            className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="inline-flex justify-center rounded p-2 cursor-pointer text-gray-900 bg-white dark:text-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200"
           >
             <svg
               aria-hidden="true"
@@ -238,7 +211,7 @@ const Sidebar = () => {
           <a
             href="#"
             data-tooltip-target="tooltip-settings"
-            className="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600"
+            className="inline-flex justify-center rounded p-2 cursor-pointer text-gray-900 bg-white dark:text-white dark:bg-gray-950 hover:bg-gray-100 dark:hover:text-gray-900 dark:hover:bg-amber-400 transition duration-200"
           >
             <svg
               aria-hidden="true"

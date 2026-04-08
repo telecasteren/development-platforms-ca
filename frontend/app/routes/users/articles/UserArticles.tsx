@@ -1,16 +1,20 @@
-"use client";
-
-import { useState } from "react";
-import { useLoaderData } from "react-router";
-import { SearchBar } from "../../../components/search/SearchBar";
-import { getUserArticles } from "utils/api/articles/get-user-articles";
-import { requireToken } from "utils/session.server";
 import type { Route } from "./+types/UserArticles";
-import type { ApiArticle } from "../../articles/types";
+import { useEffect, useState } from "react";
+import { useActionData, useLoaderData, useNavigation } from "react-router";
+import { SearchBar } from "../../../components/search/SearchBar";
+import { getUserArticles } from "services/api/articles/fetch/get-user-articles";
+import { postArticle } from "services/api/articles/post-article";
+import { requireToken } from "services/session.server";
+import ArticlesSection from "../../../components/articles/ArticlesSection";
+import NewArticleForm from "../../../components/form/NewArticleForm";
 
-export const meta = ({}: Route.MetaArgs) => {
+export const meta = ({ loaderData }: Route.MetaArgs) => {
+  const userEmail =
+    loaderData && loaderData.length > 0
+      ? loaderData[0].author_email
+      : "My Articles";
   return [
-    { title: "My Articles - The News Bureau" },
+    { title: `${userEmail} - The News Bureau` },
     { name: "description", content: "Manage your articles." },
   ];
 };
@@ -20,77 +24,66 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   return getUserArticles(token);
 };
 
-export default function UserArticles() {
-  const [showForm, setShowForm] = useState(false);
-  const [showButton, setShowButton] = useState(true);
-  const [hideSearchBar, setHideSearchBar] = useState(false);
+export const action = async ({ request }: Route.ActionArgs) => {
+  try {
+    const token = await requireToken(request);
+    const formData = await request.formData();
 
-  const articles = useLoaderData<typeof loader>() as ApiArticle[];
+    await postArticle(token, {
+      title: formData.get("title") as string,
+      body: formData.get("body") as string,
+      category: formData.get("category") as string,
+    });
 
-  const handleOpenForm = () => {
-    setShowForm(true);
-    setShowButton(false);
-    setHideSearchBar(true);
-  };
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error: "Failed to create article" };
+  }
+};
 
-  const handleSubmit = () => {
-    setShowForm(false);
-    setShowButton(true);
-    setHideSearchBar(false);
-  };
+const UserArticles = () => {
+  const articles = useLoaderData<typeof loader>();
+  const [isCreating, setIsCreating] = useState(false);
+  const actionData = useActionData<typeof action>();
+
+  useEffect(() => {
+    if (actionData?.ok) {
+      setIsCreating(false);
+    }
+  }, [actionData]);
 
   return (
     <>
       <h1 className="text-4xl mt-2">My Articles</h1>
       <p>Manage and view your own articles here</p>
 
-      {!hideSearchBar && <SearchBar />}
+      {!isCreating && <SearchBar />}
 
-      {showButton && (
+      {!isCreating && (
         <button
-          onClick={handleOpenForm}
+          onClick={() => setIsCreating(true)}
           className="rounded-sm mt-6 p-3 text-black bg-amber-400 hover:brightness-105 cursor-pointer"
         >
           Create article
         </button>
       )}
 
-      {showForm && !showButton && (
-        <form className="grid gap-2 mt-6">
-          <input
-            type="text"
-            placeholder="Title here"
-            className="p-2 rounded-sm border border-gray-900 dark:border-0 dark:bg-white text-black"
-          ></input>
-          <textarea
-            placeholder="Write article here"
-            className="p-2 rounded-sm border border-gray-900 dark:border-0 dark:bg-white text-black"
-          ></textarea>
+      {isCreating && (
+        <>
+          <NewArticleForm />
           <button
-            type="submit"
-            onSubmit={handleSubmit}
-            className="p-2 rounded-sm bg-blue-600 text-white"
+            type="button"
+            onClick={() => setIsCreating(false)}
+            className="p-2 mt-2 w-full rounded-sm bg-red-800 hover:brightness-105 text-white cursor-pointer"
           >
-            Submit
+            Cancel
           </button>
-        </form>
+        </>
       )}
 
-      <section className="mt-20 p-4 grid gap-20 max-w-800 rounded-sm border border-amber-400">
-        {articles.map((item) => (
-          <div key={item.id}>
-            <h3 className="text-xl">{item.title}</h3>
-            <p className="mt-4">{item.body}</p>
-            <p className="mt-4">
-              <b>Release date:</b> {item.created_at}
-            </p>
-            <p>
-              <b>Author:</b> {item.author_email}
-            </p>
-            <hr className="bg-gray-700 m-20 " />
-          </div>
-        ))}
-      </section>
+      <ArticlesSection articles={articles} />
     </>
   );
-}
+};
+
+export default UserArticles;

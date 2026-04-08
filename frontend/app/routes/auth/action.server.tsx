@@ -1,11 +1,10 @@
 import type { Route } from "./+types/login";
-import { createAuthSession, requireGuest } from "utils/session.server";
-import { loginUser, AuthApiError } from "utils/api/auth/login";
-import { registerUser } from "utils/api/auth/register";
-import { parseCredentials } from "utils/helpers/form-data-parsing";
-import type { ActionFunctionArgs } from "react-router";
-
-export type ActionData = { error: string } | null;
+import type { ActionData } from "../types";
+import { createAuthSession, requireGuest } from "services/session.server";
+import { loginUser } from "services/api/auth/login";
+import { ApiError } from "services/api/api-error";
+import { registerUser } from "services/api/auth/register";
+import { parseCredentials } from "services/helpers/form-data-parsing";
 
 type AuthMode = "login" | "register";
 
@@ -16,7 +15,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 
 export const createAuthAction =
   (mode: AuthMode) =>
-  async ({ request }: ActionFunctionArgs) => {
+  async ({ request }: Route.ActionArgs) => {
     const formData = await request.formData();
     const parsedFormData = parseCredentials(formData);
 
@@ -37,7 +36,7 @@ export const createAuthAction =
       );
       return createAuthSession(request, login.token, "/users/articles");
     } catch (error) {
-      if (error instanceof AuthApiError) {
+      if (error instanceof ApiError) {
         return { error: error.message } satisfies ActionData;
       }
       return { error: "Unexpected auth error" } satisfies ActionData;

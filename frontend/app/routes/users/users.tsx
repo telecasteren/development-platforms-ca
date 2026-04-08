@@ -1,9 +1,9 @@
 import type { Route } from "./+types/users";
-import type { ApiUser } from "./types";
 import { useLoaderData } from "react-router";
 import { SearchBar } from "../../components/search/SearchBar";
-import { ApiError, getAllUsers } from "utils/api/users/get-all-users";
-import { requireToken, destroyAuthSession } from "utils/session.server";
+import { getAllUsers } from "services/api/users/get-all-users";
+import { ApiError } from "services/api/api-error";
+import { requireToken, destroyAuthSession } from "services/session.server";
 
 export const meta = ({}: Route.MetaArgs) => {
   return [
@@ -22,14 +22,14 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       error instanceof ApiError &&
       (error.status === 401 || error.status === 403)
     ) {
-      return destroyAuthSession(request, "/auth/login");
+      throw await destroyAuthSession(request, "/auth/login");
     }
     throw error;
   }
 };
 
 const Users = () => {
-  const users = useLoaderData<typeof loader>() as ApiUser[];
+  const users = useLoaderData<typeof loader>();
 
   return (
     <>

@@ -83,3 +83,4 @@ Open the **frontend** URL in your browser to view, test or watch live code chang
 ### Resources
 
 [React Router](https://reactrouter.com/start/framework/installation)
+[Sessions and cookies](https://reactrouter.com/explanation/sessions-and-cookies)

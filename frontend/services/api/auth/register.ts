@@ -1,10 +1,6 @@
-import { BASE_URL, AUTH_URL, REGISTER_URL } from "utils/config/constants";
-import { AuthApiError } from "./login";
-
-export type RegisterSuccess = {
-  message: string;
-  user: { id: number; email: string };
-};
+import { BASE_URL, AUTH_URL, REGISTER_URL } from "services/config/constants";
+import { ApiError } from "services/api/api-error";
+import type { RegisterSuccess } from "./types";
 
 export const registerUser = async (
   email: string,
@@ -21,9 +17,10 @@ export const registerUser = async (
   };
 
   if (!response.ok) {
-    throw new AuthApiError(
+    throw new ApiError(
       payload.error ?? payload.message ?? "Registration failed",
       response.status || 400,
+      payload,
     );
   }
 

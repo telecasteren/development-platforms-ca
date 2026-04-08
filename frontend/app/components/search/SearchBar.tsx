@@ -1,5 +1,3 @@
-"use client";
-
 export const SearchBar = () => {
   return (
     <form className="flex gap-2 mt-6">

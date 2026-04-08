@@ -1,5 +1,6 @@
 import type { Route } from "./+types/login";
-import { createAuthAction, type ActionData } from "./action.server";
+import type { ActionData } from "../types";
+import { createAuthAction } from "./action.server";
 import { Form, useActionData, Link } from "react-router";
 
 export { loader } from "./action.server";

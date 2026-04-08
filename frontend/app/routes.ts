@@ -10,7 +10,7 @@ export default [
     route("users", "routes/users/users.tsx"),
     route("users/articles", "routes/users/articles/UserArticles.tsx"),
     route("articles", "routes/articles/articles.tsx"),
-    route("articles/:id", "routes/articles/single-article.tsx"),
+    route("articles/:id", "routes/articles/[id].tsx"),
     route("help", "routes/help/help.tsx"),
     route("help/:id", "routes/help/[id].tsx"),
   ]),
