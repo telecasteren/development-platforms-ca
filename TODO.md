@@ -15,7 +15,3 @@
   - PATCH /users/:id updates a user (user 18) ✅
   - GET /users returns list of all users ✅
   - GET /users/:id returns a single user matching the id ✅
-
-Additional:
-
-- create a simple frontend ?

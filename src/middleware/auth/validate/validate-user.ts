@@ -3,7 +3,7 @@ import {
   userIdSchema,
   partialUserDataSchema,
   requiredUserDataSchema,
-} from "./schemas/user.js";
+} from "../schemas/user.js";
 
 export const validateUserId = (
   req: Request,

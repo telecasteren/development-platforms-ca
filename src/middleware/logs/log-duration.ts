@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-export function logDuration(req: Request, res: Response, next: NextFunction) {
+export const logDuration = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const start = Date.now();
   res.on("finish", () => {
     const duration = Date.now() - start;
@@ -9,4 +13,4 @@ export function logDuration(req: Request, res: Response, next: NextFunction) {
     );
   });
   next();
-}
+};

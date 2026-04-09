@@ -1,16 +1,14 @@
 import { Router } from "express";
-import { validateToken } from "../../middleware/auth/validate-token.js";
+import { validateToken } from "../../middleware/auth/validate/validate-token.js";
 import {
   validateUserId,
   validatePartialUserData,
-} from "../../middleware/auth/validate-user.js";
-import {
-  getAllUsers,
-  getUserById,
-  updateUser,
-  queryUsers,
-  deleteUser,
-} from "../../controllers/usersController.js";
+} from "../../middleware/auth/validate/validate-user.js";
+import { getAllUsers } from "../../controllers/users/get-all.js";
+import { getUserById } from "../../controllers/users/get-by-id.js";
+import { queryUsers } from "../../controllers/users/query-users.js";
+import { updateUser } from "../../controllers/users/update-user.js";
+import { deleteUser } from "../../controllers/users/delete-user.js";
 
 const router = Router();
 

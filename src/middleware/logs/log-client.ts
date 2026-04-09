@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
-export function logClientHeaders(
+export const logClientHeaders = (
   req: Request,
   res: Response,
   next: NextFunction,
-) {
+) => {
   // access headers
   const userAgent = req.headers["user-agent"];
   const authorization = req.headers.authorization;
@@ -15,4 +15,4 @@ export function logClientHeaders(
   console.log("contentType:", contentType);
 
   next();
-}
+};

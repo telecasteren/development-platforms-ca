@@ -1,8 +1,8 @@
-import { pool } from "../../config/database.js";
+import { pool } from "../../../config/database.js";
 import { Request, Response, NextFunction } from "express";
-import { verifyToken } from "./verify-token.js";
-import { userTokenSchema } from "./schemas/user.js";
-import type { User } from "../../models/user.js";
+import { verifyToken } from "../jwt/verify-token.js";
+import { userTokenSchema } from "../schemas/user.js";
+import type { User } from "../../../models/user.js";
 
 export const validateToken = async (
   req: Request,

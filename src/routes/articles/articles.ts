@@ -1,13 +1,11 @@
 import { Router } from "express";
-import { validateToken } from "../../middleware/auth/validate-token.js";
-import {
-  getAllArticles,
-  getArticleById,
-  queryArticle,
-  postArticle,
-  updateArticle,
-  deleteArticle,
-} from "../../controllers/articlesController.js";
+import { validateToken } from "../../middleware/auth/validate/validate-token.js";
+import { getAllArticles } from "../../controllers/articles/get-all.js";
+import { getArticleById } from "../../controllers/articles/get-by-id.js";
+import { postArticle } from "../../controllers/articles/post-article.js";
+import { queryArticle } from "../../controllers/articles/query-articles.js";
+import { updateArticle } from "../../controllers/articles/update-article.js";
+import { deleteArticle } from "../../controllers/articles/delete-article.js";
 
 const router = Router();
 
