@@ -9,7 +9,9 @@
 - [Technologies](#technologies)
 - [Project structure](#project-structure)
 - [Get started](#get-started)
+- [OpenApi Swagger](#openapi-swagger)
 - [Resources](#resources)
+- [AI usage](#ai-usage)
 
 ---
 
@@ -80,3 +82,20 @@ Now you can use the API with Postman or any other application by following the A
 When the server is running, go to **URL:** http://localhost:4000/api-docs/ , to see and test the API documentation. Adjust port to match where the server is running.
 
 **!Note!** The config allows a URL selection in the documentation, exposing all the URLs listed in the servers array in the swagger.ts configuration file. When used in production, these should be updated to the actual production and dev URLs. For now, I've listed 'localhost:4000' for prod and 'localhost:3000' for dev.
+
+---
+
+### Resources
+
+- [Error handling with Express.js](https://expressjs.com/en/guide/error-handling.html)
+- [zod validation](https://zod.dev/basics)
+
+### AI Usage
+
+During this project, AI tools such as Github CoPilot and Perplexity has been used to assist me in:
+
+- Explaining concepts related to Express.js, zod and best practices
+- Improving code documentation quality
+- Providing commit message suggestions
+
+The architecture, implementation and code decisions are all performed by me.

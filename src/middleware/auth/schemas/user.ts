@@ -27,7 +27,7 @@ const requiredUserDataSchema = z.object({
     .string()
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,
-      "Password must at least contain a uppercase and lowercase letter, a number and a special character",
+      "Password must at least contain 8 characters of uppercase and lowercase letter, a number and a special character",
     ),
 });
 
