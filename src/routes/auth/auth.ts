@@ -2,7 +2,10 @@ import { Router } from "express";
 import { registerUser } from "../../controllers/auth/register-user.js";
 import { loginUser } from "../../controllers/auth/login-user.js";
 import { validateBody } from "../../middleware/auth/validate/body.js";
-import { requiredUserDataSchema } from "../../middleware/auth/schemas/user.js";
+import {
+  loginSchema,
+  registerSchema,
+} from "../../middleware/auth/schemas/user.js";
 
 const router = Router();
 
@@ -32,7 +35,7 @@ const router = Router();
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
-router.post("/login", validateBody(requiredUserDataSchema), loginUser);
+router.post("/login", validateBody(loginSchema), loginUser);
 
 /**
  * @swagger
@@ -60,6 +63,6 @@ router.post("/login", validateBody(requiredUserDataSchema), loginUser);
  *       409:
  *         $ref: '#/components/responses/Conflict'
  */
-router.post("/register", validateBody(requiredUserDataSchema), registerUser);
+router.post("/register", validateBody(registerSchema), registerUser);
 
 export default router;

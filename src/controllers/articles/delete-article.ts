@@ -26,13 +26,14 @@ export const deleteArticle = asyncHandler(async (req, res) => {
   );
   const articles = rows as Article[];
   const article = articles[0];
-  const authorId = Number(article.submitted_by);
 
   if (!article) {
     return res.status(404).json({
       error: "Article not found",
     });
   }
+
+  const authorId = Number(article.submitted_by);
 
   if (authorId !== userId) {
     return res.status(403).json({
