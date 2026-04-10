@@ -37,13 +37,18 @@ export const updateArticle = asyncHandler(async (req, res) => {
   const fields = [];
   const values = [];
 
+  // supported PATCH fields
   if (title) {
     fields.push("title = ?");
     values.push(title);
-  } else if (category) {
+  }
+
+  if (category) {
     fields.push("category = ?");
     values.push(category);
-  } else if (body) {
+  }
+
+  if (body) {
     fields.push("body = ?");
     values.push(body);
   }
