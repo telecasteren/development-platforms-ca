@@ -99,20 +99,24 @@ _Can be opened in your browser._
 
 Now you can use the API with Postman or any other application by following the API documentation.
 
+---
+
 💡 **Recommended testing route:**
 
-```
-- Start by testing all endpoints with empty headers and body
-- Then register a new user (try first with invalid body and then a valid body)
-- Login as the new user (try first with invalid body and then a valid body)
-- Create an article (try first with invalid body and then a valid body)
-- Fetch the article by its id
-- Try to update someone elses article (see database export for article ids)
-- Update the article (try first with empty or invalid body, then with one or more fields)
-- Search for the article by querying title, body or category
-- Delete the article
-- Fetch all articles
-```
+<div style="padding: 10px; background-color: gray; color: black; border-radius: 4px;">
+<ul>
+<li>Start by testing all endpoints with empty headers and body</li>
+<li>Then register a new user (try first with invalid body and then a valid body)</li>
+<li>Login as the new user (try first with invalid body and then a valid body)</li>
+<li>Create an article (try first with invalid body and then a valid body)</li>
+<li>Fetch the article by its id</li>
+<li>Try to update someone elses article (see database export for article ids)</li>
+<li>Update the article (try first with empty or invalid body, then with one or more fields)</li>
+<li>Search for the article by querying title, body or category</li>
+<li>Delete the article</li>
+<li>Fetch all articles</li>
+</ul>
+</div>
 
 ---
 
