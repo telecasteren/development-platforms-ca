@@ -72,9 +72,10 @@ _Prerequisites:_
   ```bash
   npm install
   ```
-- Create a new database (news_bureau) with the provided .sql database export (MySQL Workbench/ other)
+- Create a new database (tele_news_bureau) with the provided .sql database export (MySQL Workbench/ other)
   - Database file: [Dumpxxx.sql](src/config/data/Dump20260412.sql)
   - Follow .env.example for DB credentials needed in .env
+    - `DB_NAME=` must be exactly the database name
   - [import issues?](#database-issues)
 - Configure your .env file (follow .env.example)
   - Generate a random JWT_SECRET:<br/>
